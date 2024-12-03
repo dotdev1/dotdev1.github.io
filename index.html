@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta name="color-scheme" content="dark light">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Document</title>
+<style>
+
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+body {
+  font: 16px system-ui;
+}
+
+</style>
+</head>
+<body>
+    
+<script>
+try{"use strict" 
+
+// Function to extract the shortcut name from the current URL
+function getShortcutNameFromCurrentUrl() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const errorDomain = urlParams.get('errorDomain');
+    const errorCode = urlParams.get('errorCode');
+    const errorMessage = urlParams.get('errorMessage');
+
+    // Check if errorDomain is NSCocoaErrorDomain and errorCode is 4
+    if (errorDomain === 'NSCocoaErrorDomain' && errorCode === '4') {
+        const match = errorMessage.match(/“([^”]+)”/);
+        return match ? match[1] : null;
+    } else {
+        console.error('Error domain or error code does not match the required criteria');
+        return null;
+    }
+}
+
+// Function to search RoutineHub with a given shortcut name
+function searchRoutineHub(shortcutName) {
+    if (!shortcutName) {
+        console.error('Shortcut name not found in the URL');
+        return;
+    }
+    // Encode the shortcut name to be URL-friendly
+    const query = encodeURIComponent(shortcutName);
+    // Construct the search URL
+    const searchUrl = `https://routinehub.co/search/?q=${query}`;
+    // Redirect to the search URL in the current tab
+    window.location.href = searchUrl;
+}
+
+// Extract the shortcut name from the current URL and search RoutineHub
+const shortcutName = getShortcutNameFromCurrentUrl();
+searchRoutineHub(shortcutName);
+
+
+}catch(e){document.write(e);}
+</script>
+</body>
+</html>
